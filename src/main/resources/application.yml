@@ -1,0 +1,11 @@
+server:
+  port: 8989
+
+spring:
+  application:
+    name: test-demo
+#logging:
+#  config: classpath:logback-spring.xml
+#  level:
+#    root: info
+

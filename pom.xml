@@ -14,6 +14,8 @@
     <description>test-demo</description>
     <properties>
         <java.version>8</java.version>
+        <!--自定义 docker 镜像前缀，类似 docker.io/mysql 中的 docker.io-->
+        <docker.image.prefix>testDemo</docker.image.prefix>
     </properties>
     <dependencies>
         <dependency>
@@ -50,6 +52,26 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- docker 插件，用于 maven 打包时生成 docker 镜像 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <!-- dockerfile 配置文件所在的目录-->
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <imageTags>${project.version}</imageTags>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
